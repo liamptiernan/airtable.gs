@@ -21,12 +21,12 @@ const base = airtable.base(YOUR_BASE_ID);
 
 `Base` has multiple methods to add, delete, modify, and fetch records. They are as follows:
 
-- `.select()`
-- `.find()`
-- `.create()`
-- `.update()`
-- `.replace()`
-- `.destroy()`
+- [`.select()`](https://github.com/liamptiernan/airtable.gs#select)
+- [`.find()`](https://github.com/liamptiernan/airtable.gs#find)
+- [`.create()`](https://github.com/liamptiernan/airtable.gs#create)
+- [`.update()`](https://github.com/liamptiernan/airtable.gs#update)
+- [`.replace()`](https://github.com/liamptiernan/airtable.gs#replace---destructive)
+- [`.destroy()`](https://github.com/liamptiernan/airtable.gs#destroy---destructive)
 
 ### Record Object Structure
 
