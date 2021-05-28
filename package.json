@@ -1,0 +1,15 @@
+{
+  "name": "airtable_api",
+  "version": "1.0.0",
+  "description": "airtable_api helper",
+  "main": "Code.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.27.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
