@@ -34,7 +34,7 @@ function buildUrl(params, credentials) {
 
   if (params.fields) { params.fields.forEach((field) => url = url + 'fields%5B%5D=' + encodeURIComponent(field) + '&'); }
 
-  if (params.filterByFormula) { url = url + encodeURIComponent(params.filterByFormula) + '&'; }
+  if (params.filterByFormula) { url = url + 'filterByFormula=' + encodeURIComponent(params.filterByFormula) + '&'; }
 
   if (params.maxRecords) { url = url + 'maxRecords=' + params.maxRecords + '&'; }
 
