@@ -7,10 +7,20 @@ It follows many of the semantics found in the official Airtable API documentatio
 
 ## Usage
 
-Create a new Airtable object and pass in your API Key as the first parameter: `new Airtable(YOUR_API_KEY)`
-Optionally, you can specify a specific URL endpoint as the second paramenter. The default is `https://api.airtable.com`
+### Including In GAS Project
 
-Call `Airtable.base(YOUR_BASE_ID)` to create a new `Base` object.
+To include this library in your Google Apps Script project, simply copy and paste the contents of the `/src` folder into your project.
+
+You may optionally include it as a library by following the instructions [here](https://developers.google.com/apps-script/guides/libraries). Please contact the owner of this repo for the script ID. 
+
+Note that including as a library will have performance drawbacks and slightly different syntax. Refer to [this section](https://github.com/liamptiernan/airtable.gs#library) for details.
+
+### Getting Started
+
+Create a new Airtable object and pass in your API Key as the first argument: `new Airtable(YOUR_API_KEY)`
+Optionally, you can specify a specific URL endpoint as the second argument. The default is `https://api.airtable.com`
+
+Call `.base(YOUR_BASE_ID)` on an `Airtable` instance to create a new `Base` object.
 
 
 To create an airtable and base object:
@@ -109,14 +119,20 @@ const record = base.find('Your Table', 'rec123456789abc');
 An object containing the record data.
 
 ### Create
-`.create(tableName, records)`
+`.create(tableName, records, optionalParams)`
 
-Create creates the record object(s) with the provided field values and returns an array of the created record objects. It takes two required arguments; a string `tableName`, and an array of objects, `records`.
+Create creates the record object(s) with the provided field values and returns an array of the created record objects. It takes two required arguments and one optional argument; a string `tableName`, an array of objects, `records`, and optionally an object, `optionalParams`.
 
 - `tableName` *(String, **Required**)*
   - Name of table in base to query.
 - `records` *(Array of Objects, **Required**)*
   - Array of up to 10 record objects. Each of these objects should have one key, `fields`, which contains all of your record's cell values by field name. You can include all, some, or none of the field values.
+- `optionalParams` *(Object, Optional)*
+  - A Javascript object that specifies advanced parameters as listed below.
+
+**Advanced Parameters**
+- `typecast` *(Boolean, Optional)*
+  - The Airtable API will perform best-effort automatic data conversion from string values if the `typecast` parameter is passed in. Automatic conversion is disabled by default to ensure data integrity, but it may be helpful for integrating with 3rd party data sources.
 
 #### Example `.create()` call:
 ```javascript
@@ -138,15 +154,15 @@ const createData = [
     }
 ]
 
-const createdRecords = base.create('Your Table', createData);
+const createdRecords = base.create('Your Table', createData, {typecast: true});
 ```
 #### Response
 An array of record objects of the newly created records.
 
 ### Update
-`.update(tableName, records)`
+`.update(tableName, records, optionalParams)`
 
-Update modifies existing records with the provided field values and returns an array of the modified record objects. It takes two required arguments; a string `tableName`, and an array of objects, `records`.
+Update modifies existing records with the provided field values and returns an array of the modified record objects. It takes two required arguments and one optional argument; a string `tableName`, an array of objects, `records`, and optionally an object, `optionalParams`.
 
 Only the fields specified will be modified, with the rest left as is.
 
@@ -154,6 +170,12 @@ Only the fields specified will be modified, with the rest left as is.
   - Name of table in base to query.
 - `records` *(Array of Objects, **Required**)*
   - Array of up to 10 record objects. Each of these objects should have an id property representing the record ID and a fields property which contains all of your record's cell values by field name. You can include all, some, or none of the field values.
+- `optionalParams` *(Object, Optional)*
+  - A Javascript object that specifies advanced parameters as listed below.
+
+**Advanced Parameters**
+- `typecast` *(Boolean, Optional)*
+  - The Airtable API will perform best-effort automatic data conversion from string values if the `typecast` parameter is passed in. Automatic conversion is disabled by default to ensure data integrity, but it may be helpful for integrating with 3rd party data sources.
 
 #### Example `.update()` call:
 ```javascript
@@ -177,7 +199,7 @@ const updateData = [
     }
 ]
 
-const updatedRecords = base.update('Your Table', updateData);
+const updatedRecords = base.update('Your Table', updateData, {typecast: true});
 ```
 #### Response
 An array of record objects of the updated records.
@@ -185,7 +207,7 @@ An array of record objects of the updated records.
 ### Replace - (Destructive)
 `.replace(tableName, records)`
 
-Replace overwrites existing records with the provided field values and returns an array of the modified record objects. It takes two required arguments; a string `tableName`, and an array of objects, `records`.
+Replace overwrites existing records with the provided field values and returns an array of the modified record objects. It takes two required arguments and one optional argument; a string `tableName`, an array of objects, `records`, and optionally an object, `optionalParams`.
 
 A replace will perform a destructive update and clear all unspecified cell values.
 
@@ -193,6 +215,12 @@ A replace will perform a destructive update and clear all unspecified cell value
   - Name of table in base to query.
 - `records` *(Array of Objects, **Required**)*
   - Array of up to 10 record objects. Each of these objects should have an id property representing the record ID and a fields property which contains all of your record's cell values by field name. You can include all, some, or none of the field values. All fields will be modified, even if unspecified.
+- `optionalParams` *(Object, Optional)*
+  - A Javascript object that specifies advanced parameters as listed below.
+
+**Advanced Parameters**
+- `typecast` *(Boolean, Optional)*
+  - The Airtable API will perform best-effort automatic data conversion from string values if the `typecast` parameter is passed in. Automatic conversion is disabled by default to ensure data integrity, but it may be helpful for integrating with 3rd party data sources.
 
   #### Example `.replace()` call:
 ```javascript
@@ -216,7 +244,7 @@ const replaceData = [
     }
 ]
 
-const replacedRecords = base.replace('Your Table', replaceData);
+const replacedRecords = base.replace('Your Table', replaceData, {typecast: true});
 ```
 #### Response
 An array of record objects of the replaced records.
@@ -257,4 +285,21 @@ An array of objects specifying the deleted record IDs and the deleted state.
         deleted=true
     }
 ]
+```
+
+## Library
+
+If using as a GAS library, the default name of library will be `Airtablegs`. It's recommended that you change this to `Airtable` for readability. The following examples will assume `Airtable` as the library name. 
+
+All syntax remains the same as above, the only difference is creating a new `Airtable` object.
+
+To create a new Airtable object, call `Airtable.newAirtable(YOUR_API_KEY)` and pass in your API Key.
+Optionally, you can specify a specific URL endpoint as the second argument. The default is `https://api.airtable.com`
+
+Call `.base(YOUR_BASE_ID)` on an `Airtable` instance to create a new `Base` object.
+
+To create an airtable and base object:
+```javascript
+const airtable = Airtable.newAirtable(YOUR_API_KEY);
+const base = airtable.base(YOUR_BASE_ID);
 ```
