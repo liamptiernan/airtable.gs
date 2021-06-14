@@ -26,24 +26,33 @@ class Base extends Airtable {
     return response;
   }
 
-  create(tableName, records) {
-    const params = {tableName: tableName, records: {'records': records}};
+  create(tableName, records, optionalParams={}) {
+    const params = {
+      tableName: tableName, 
+      records: {'records': records, typecast: optionalParams.typecast}
+      };
     const response = modifyAirtable(params, this, 'create');
 
     Logger.log(`Created ${response['records'].length} records.`);
     return response['records'];
   }
 
-  update(tableName, records) {
-    const params = {tableName: tableName, records: {'records': records}};
+  update(tableName, records, optionalParams={}) {
+    const params = {
+      tableName: tableName, 
+      records: {'records': records, typecast: optionalParams.typecast}
+    };
     const response = modifyAirtable(params, this, 'update');
 
     Logger.log(response);
     return response['records'];
   }
 
-  replace(tableName, records) {
-    const params = {tableName: tableName, records: {'records': records}};
+  replace(tableName, records, optionalParams={}) {
+    const params = {
+      tableName: tableName, 
+      records: {'records': records, typecast: optionalParams.typecast}
+    }
     const response = modifyAirtable(params, this, 'replace');
 
     Logger.log(response);
@@ -58,4 +67,3 @@ class Base extends Airtable {
     return response['records'];
   }
 }
-

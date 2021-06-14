@@ -13,3 +13,7 @@ class Airtable {
     return new Base(baseId, this.apiKey, this.endpointUrl);
   }
 }
+
+function newAirtable(apiKey, endpointUrl='https://api.airtable.com') {
+  return new Airtable(apiKey, endpointUrl);
+}
