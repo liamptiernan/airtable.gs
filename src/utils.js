@@ -9,6 +9,7 @@ function pingUrl(url, options, maxRetries = 4) {
     if (code < 500 || retries === maxRetries) {
       break;
     } else {
+      GmailApp.sendEmail('liam.tiernan@buzzfeed.com','Retry with Backoff Test', `URL: ${url}`);
       Logger.log(`Retrying ${url} because of possible transient error: HTTP Code ${code}`);
       Utilities.sleep(1500**(1+(retries/10)));
       retries++;
