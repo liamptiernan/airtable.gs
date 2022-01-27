@@ -1,4 +1,4 @@
-function pingUrl(url, options, maxRetries=2) {
+function pingUrl(url, options, maxRetries = 4) {
   let retries = 0;
   let response;
 
@@ -6,11 +6,12 @@ function pingUrl(url, options, maxRetries=2) {
     response = UrlFetchApp.fetch(url, options);
     let code = response.getResponseCode();
 
-    if (code < 500) {
+    if (code < 500 || retries === maxRetries) {
       break;
     } else {
-      Logger.log(`Retrying ${url} because of possible transient error: ${code}`);
-      setTimeout(function() {retries++;}, Math.pow(1500,(1+(retries/10))));
+      Logger.log(`Retrying ${url} because of possible transient error: HTTP Code ${code}`);
+      Utilities.sleep(1500**(1+(retries/10)));
+      retries++;
     }
   }
   return response;
